@@ -9,6 +9,7 @@ Node
 Methods:
 
 #build_tree
+#sorted_array_to_BST
 #pretty_print
 #insert
 #delete

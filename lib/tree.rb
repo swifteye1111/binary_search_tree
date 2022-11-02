@@ -4,6 +4,7 @@ require_relative 'node'
 
 # Binary Search Tree
 class Tree
+  attr_reader :root
   def initialize(arr = [])
     @root = build_tree(arr)
   end
@@ -31,24 +32,25 @@ class Tree
 
   def insert(value)
     new_node = Node.new(value)
-    node = @root
-    traverse_tree_to_insert(new_node, node)
+    @root = insert_rec(@root, new_node)
   end
 
-  def traverse_tree_to_insert(new_node, node)
-    case new_node.data <=> (node.data)
-    when -1
-      if node.left
-        traverse_tree_to_insert(new_node, node.left)
-      else
-        node.left = new_node
-      end
-    when 1
-      if node.right
-        traverse_tree_to_insert(new_node, node.right)
-      else
-        node.right = new_node
-      end
+  def insert_rec(current, new_node)
+    if current.nil?
+      current = new_node
+      return current
     end
+
+    case new_node.data <=> current.data
+    when -1 then current.left = insert_rec(current.left, new_node)
+    when 1 then current.right = insert_rec(current.right, new_node)
+    else return nil
+    end
+
+    current
+  end
+
+  def delete(value)
+
   end
 end

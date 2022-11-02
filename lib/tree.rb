@@ -5,6 +5,7 @@ require_relative 'node'
 # Binary Search Tree
 class Tree
   attr_reader :root
+  
   def initialize(arr = [])
     @root = build_tree(arr)
   end
@@ -46,11 +47,43 @@ class Tree
     when 1 then current.right = insert_rec(current.right, new_node)
     else return nil
     end
-
     current
   end
 
   def delete(value)
+    @root = delete_rec(@root, value)
+    puts "Deleted #{value}."
+  end
 
+  def delete_rec(current, value)
+    return current if current.nil?
+
+    case value <=> current.data
+    when -1 then current.left = delete_rec(current.left, value)
+    when 1 then current.right = delete_rec(current.right, value)
+    else
+      current = delete_current(current)
+    end
+    current
+  end
+
+  def delete_current(current)
+    if current.left.nil?
+      return current.right
+    elsif current.right.nil?
+      return current.left
+    end
+    current.data = min_value(current.right)
+    current.right = delete_rec(current.right, current.data)
+    current
+  end
+
+  def min_value(node)
+    min_val = node.data
+    while node.left
+      min_val = node.left.data
+      node = node.left
+    end
+    min_val
   end
 end

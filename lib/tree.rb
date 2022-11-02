@@ -8,7 +8,6 @@ class Tree
     @root = build_tree(arr)
   end
 
-  # turns into balanced binary tree full of Node objs correctly placed.
   def build_tree(arr)
     sorted = arr.sort.uniq
     @root = sorted_array_to_bst(sorted, 0, arr.length - 1)
@@ -28,5 +27,28 @@ class Tree
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
+  end
+
+  def insert(value)
+    new_node = Node.new(value)
+    node = @root
+    traverse_tree_to_insert(new_node, node)
+  end
+
+  def traverse_tree_to_insert(new_node, node)
+    case new_node.data <=> (node.data)
+    when -1
+      if node.left
+        traverse_tree_to_insert(new_node, node.left)
+      else
+        node.left = new_node
+      end
+    when 1
+      if node.right
+        traverse_tree_to_insert(new_node, node.right)
+      else
+        node.right = new_node
+      end
+    end
   end
 end

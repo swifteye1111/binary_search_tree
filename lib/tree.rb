@@ -68,11 +68,9 @@ class Tree
   end
 
   def delete_current(current)
-    if current.left.nil?
-      return current.right
-    elsif current.right.nil?
-      return current.left
-    end
+    return current.right if current.left.nil?
+    return current.left if current.right.nil?
+
     current.data = min_value(current.right)
     current.right = delete_rec(current.right, current.data)
     current
@@ -85,5 +83,17 @@ class Tree
       node = node.left
     end
     min_val
+  end
+
+  def find(value)
+    find_rec(@root, value)
+  end
+
+  def find_rec(current, value)
+    case value <=> current.data
+    when 0 then current
+    when -1 then find_rec(current.left, value)
+    when 1 then find_rec(current.right, value)
+    end
   end
 end

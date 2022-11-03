@@ -115,4 +115,15 @@ class Tree
       level_ordered.map(&:data)
     end
   end
+
+  def level_order_rec(node = @root, node_queue=[], level_ordered=[])
+    yield node if block_given?
+    level_ordered << node.data
+
+    node_queue << node.left if node.left
+    node_queue << node.right if node.right
+    return level_ordered if node_queue.empty?
+
+    level_order_rec(node_queue.shift, node_queue, level_ordered)
+  end
 end

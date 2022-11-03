@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'node'
+require 'pry-byebug'
 
 # Binary Search Tree
 class Tree
@@ -12,7 +13,7 @@ class Tree
 
   def build_tree(arr)
     sorted = arr.sort.uniq
-    @root = sorted_array_to_bst(sorted, 0, arr.length - 1)
+    @root = sorted_array_to_bst(sorted, 0, sorted.length - 1)
   end
 
   def sorted_array_to_bst(arr, first_idx, last_idx)
@@ -94,6 +95,24 @@ class Tree
     when 0 then current
     when -1 then find_rec(current.left, value)
     when 1 then find_rec(current.right, value)
+    end
+  end
+
+  def level_order
+    node_queue = []
+    level_ordered = []
+    node_queue << @root
+    i = 0
+    until node_queue.empty?
+      level_ordered << node_queue.shift
+      node_queue << level_ordered[i].left if level_ordered[i].left
+      node_queue << level_ordered[i].right if level_ordered[i].right
+      i += 1
+    end
+    if block_given?
+      level_ordered.each { |node| yield node }
+    else
+      level_ordered.map(&:data)
     end
   end
 end

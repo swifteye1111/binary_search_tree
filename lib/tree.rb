@@ -116,7 +116,7 @@ class Tree
     end
   end
 
-  def level_order_rec(node = @root, node_queue=[], level_ordered=[])
+  def level_order_rec(node = @root, node_queue=[], level_ordered=[], &block)
     yield node if block_given?
     level_ordered << node.data
 
@@ -124,6 +124,33 @@ class Tree
     node_queue << node.right if node.right
     return level_ordered if node_queue.empty?
 
-    level_order_rec(node_queue.shift, node_queue, level_ordered)
+    level_order_rec(node_queue.shift, node_queue, level_ordered, &block)
+  end
+
+  def inorder(node = @root, inorder = [], &block)
+    return inorder if node.nil?
+
+    inorder(node.left, inorder, &block)
+    yield node if block_given?
+    inorder << node
+    inorder(node.right, inorder, &block)
+  end
+  
+  def preorder(node = @root, preordered = [], &block)
+    return preordered if node.nil?
+
+    yield node if block_given?
+    preordered << node
+    preorder(node.left, preordered, &block)
+    preorder(node.right, preordered, &block)
+  end
+
+  def postorder(node = @root, postordered = [], &block)
+    return postordered if node.nil?
+
+    postorder(node.left, postordered, &block)
+    postorder(node.right, postordered, &block)
+    yield node if block_given?
+    postordered << node
   end
 end

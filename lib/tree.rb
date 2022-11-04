@@ -161,5 +161,17 @@ class Tree
     [height(node.left, distance), height(node.right, distance)].max
   end
 
-  
+  def depth(node, idx = 0)
+    return -1 if node.nil?
+
+    data = level_order
+    idx += 1 until data[idx] == node.data || idx == level_order.length
+    case idx
+    when 0, 1 then idx
+    when level_order.length then -1
+    else
+      idx += 1 if idx.odd?
+      Math.log(idx, 2).floor
+    end
+  end
 end

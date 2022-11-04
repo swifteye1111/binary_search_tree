@@ -6,7 +6,7 @@ require 'pry-byebug'
 # Binary Search Tree
 class Tree
   attr_reader :root
-  
+
   def initialize(arr = [])
     @root = build_tree(arr)
   end
@@ -135,7 +135,7 @@ class Tree
     inorder << node
     inorder(node.right, inorder, &block)
   end
-  
+
   def preorder(node = @root, preordered = [], &block)
     return preordered if node.nil?
 
@@ -153,4 +153,13 @@ class Tree
     yield node if block_given?
     postordered << node
   end
+
+  def height(node, distance=-1)
+    return distance if node.nil?
+
+    distance += 1
+    [height(node.left, distance), height(node.right, distance)].max
+  end
+
+  
 end

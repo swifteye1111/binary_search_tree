@@ -186,9 +186,8 @@ class Tree
   end
 
   def rebalance
-    nodes = inorder
     data = []
-    nodes.each { |node| data << node.data }
+    inorder { |node| data << node.data }
     build_tree(data)
   end
 end

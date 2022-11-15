@@ -46,7 +46,7 @@ class Tree
     case new_node.data <=> current.data
     when -1 then current.left = insert_rec(current.left, new_node)
     when 1 then current.right = insert_rec(current.right, new_node)
-    else return nil
+    else return current
     end
     current
   end
@@ -154,7 +154,7 @@ class Tree
     postordered << node
   end
 
-  def height(node, distance=-1)
+  def height(node, distance = -1)
     return distance if node.nil?
 
     distance += 1
@@ -173,5 +173,16 @@ class Tree
       idx += 1 if idx.odd?
       Math.log(idx, 2).floor
     end
+  end
+
+  def balanced?(node = @root, balanced: true)
+    return balanced if node.nil?
+
+    balanced = (height(node.left) - height(node.right)).between?(-1, 1) ? true : false
+    return false unless balanced
+
+    balanced = balanced?(node.left)
+    balanced = balanced?(node.right)
+    balanced
   end
 end

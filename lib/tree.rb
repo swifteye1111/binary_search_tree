@@ -181,8 +181,14 @@ class Tree
     balanced = (height(node.left) - height(node.right)).between?(-1, 1) ? true : false
     return false unless balanced
 
-    balanced = balanced?(node.left)
-    balanced = balanced?(node.right)
-    balanced
+    balanced?(node.left)
+    balanced?(node.right)
+  end
+
+  def rebalance
+    nodes = inorder
+    data = []
+    nodes.each { |node| data << node.data }
+    build_tree(data)
   end
 end
